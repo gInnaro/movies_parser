@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Парсер фильмов</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Парсер фильмов</h1>
+    <button id="loadMovies">Загрузить фильмы</button>
+    <table id="moviesTable">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Режиссер</th>
+                <th>Год</th>
+                <th>Жанр</th>
+                <th>Рейтинг IMDb</th>
+            </tr>
+        </thead>
+        <tbody id="moviesList"></tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $('#loadMovies').click(function() {
+                $.post('/load_movies/', function(data) {
+                    $('#moviesList').empty();
+                    data.forEach(function(movie) {
+                        $('#moviesList').append(`
+                            <tr>
+                                <td>${movie.title}</td>
+                                <td>${movie.director}</td>
+                                <td>${movie.year}</td>
+                                <td>${movie.genre}</td>
+                                <td>${movie.rating}</td>
+                            </tr>
+                        `);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
